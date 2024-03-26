@@ -192,10 +192,7 @@ resource "aws_route_table" "route1" {
   tags = {
     Name = "Private Route table"
   }
-  route{
-    cidr_block = "0.0.0.0/0"
-   nat_gateway_id = aws_nat_gateway.nat.id
-}
+
 }
 
 resource "aws_route_table_association" "b" {
