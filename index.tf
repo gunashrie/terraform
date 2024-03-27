@@ -192,7 +192,10 @@ resource "aws_route_table" "route1" {
   tags = {
     Name = "Private Route table"
   }
-
+  route{
+    cidr_block = "0.0.0.0/0"
+   nat_gateway_id = aws_nat_gateway.nat.id
+}
 }
 
 resource "aws_route_table_association" "b" {
@@ -211,6 +214,8 @@ resource "aws_instance" "Pub_inst" {
   ami           = "ami-0516715c2acda76a8"
   instance_type = "t2.micro"
   key_name      = "keey"
+  
+
  
    
     subnet_id     = aws_subnet.public_subnet.id
@@ -249,3 +254,19 @@ resource "aws_instance" "Priv_inst" {
     Name = "private  instance"
   }
 }
+
+
+#NAT
+
+resource "aws_eip" "eipalloc" {
+  domain = "vpc"
+}
+
+resource "aws_nat_gateway" "nat" {
+  allocation_id = aws_eip.eipalloc.id
+  subnet_id     = aws_subnet.public_subnet.id
+
+}
+
+
+
